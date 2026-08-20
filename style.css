@@ -1,0 +1,252 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Roboto", sans-serif;
+}
+
+.body {
+    background-color: black;
+    color: white;
+}
+
+.left {
+    width: 25vw;
+}
+
+.right {
+    width: 75vw;
+    margin: 8px 0px;
+    position: relative;
+}
+
+.logo img {
+    width: 92px;
+}
+
+.home ul li {
+    list-style: none;
+    width: 16px;
+    gap: 5px;
+    padding-top: 14px;
+    font-weight: bold;
+}
+
+.library {
+    min-height: 80vh;
+    position: relative;
+}
+
+.heading img {
+    width: 24px;
+}
+
+.heading {
+    display: flex;
+    width: 100%;
+    gap: 5px;
+    padding-top: 14px;
+    padding: 23px 14px;
+    font-weight: bold;
+    align-items: center;
+}
+
+.footer {
+    display: flex;
+    font-size: 9px;
+    gap: 10px;
+    flex-wrap: wrap;
+    /* position: absolute; */
+    margin-top: 80px;
+    /* bottom: 5px; */
+    padding: 10px;
+
+
+}
+
+.footer a {
+    color: grey;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.header {
+    height: 78px;
+    display: flex;
+    justify-content: space-between;
+    background: #1e1e1e;
+}
+
+.header>* {
+    padding: 20px;
+}
+
+.button>* {
+    margin: 0 12px;
+}
+
+.signup-btn {
+    background-color: #1e1e1e;
+    color: grey;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.signup-btn:hover {
+    color: white;
+    font-size: 17px;
+    transition: 0.15s;
+}
+
+.login-btn {
+    background-color: white;
+    color: black;
+    font-size: 14px;
+    border-radius: 21px;
+    padding: 10px;
+    width: 78px;
+    cursor: pointer;
+}
+
+.login-btn:hover {
+    font-weight: bold;
+    font-size: 15px;
+    transition: 0.15s;
+}
+
+.cardContainer {
+    display: flex;
+    gap: 10px;
+    margin: 30px;
+    flex-wrap: wrap;
+    max-height: 70vh;
+    overflow-y: scroll;
+}
+
+.zonixPlaylist {
+    padding: 16px;
+}
+
+.zonixPlaylist .card {
+    width: 200px;
+    padding: 10px;
+    background-color: rgba(37, 37, 37, 1);
+    border-radius: 7px;
+}
+
+.card img {
+    width: 100%;
+    object-fit: contain;
+    border-radius: 5px;
+}
+
+.card {
+    position: relative;
+}
+.card:hover{
+    background-color: #1d1d1d;
+}
+
+.card p {
+    margin-top: 5px;
+    margin-bottom: 3px;
+    color: grey;
+}
+
+.play {
+    position: absolute;
+    bottom: 104px;
+    right: 22px;
+}
+
+.playbar {
+    position: absolute;
+    bottom: 0;
+    background-color: #2f70ee;
+    width: 72vw;
+    padding: 12px;
+    border-radius: 7px;
+}
+
+.songbuttons {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+}
+
+.songList {
+    height: 450px;
+    overflow-y: scroll;
+    padding: 8px;
+    margin-bottom: 5px;
+
+}
+
+.songList ul {
+    padding: 0 12px;
+}
+
+.songList ul li {
+    list-style-type: decimal;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    border: 2px solid white;
+    border-radius: 5px;
+    padding: 9px;
+    margin: 12px -10px;
+    font-size: 14px;
+}
+
+.songinfo {
+    width: 250px;
+    padding: 2px 8px;
+    font-size: 12px
+}
+
+.playnow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 103px;
+}
+
+.playnow span {
+    width: 100px;
+    font-size: 12px;
+    padding: 12px;
+}
+
+.seekbar {
+    height: 5px;
+    width: 72vw;
+    background-color: #1d1d1d;
+    position: relative;
+    bottom: 9px;
+    border-radius: 7px;
+}
+  
+.circle{
+    height: 16px;
+    width: 16px;
+    border-radius: 13px;
+    background-color: aliceblue;
+    position: relative;
+    bottom: 5px;
+    margin :  5px 0;
+    transition: left 0.5s;
+    left: 0%;
+}
+
+
+
+
+
+
+
+
+
