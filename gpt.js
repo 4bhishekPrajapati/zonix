@@ -10,40 +10,16 @@ let currentSong = new Audio();
 
 
 // ==========================================
-// GET SONGS FROM SERVER
+// GET SONGS FROM SUPABASE
 // ==========================================
 
 async function getSongs() {
-    try {
-        const response = await fetch("http://127.0.0.1:3000/songs/");
-
-        if (!response.ok) {
-            throw new Error(`Server error: ${response.status}`);
-        }
-
-        const html = await response.text();
-
-        const div = document.createElement("div");
-        div.innerHTML = html;
-
-        const links = div.getElementsByTagName("a");
-
-        const songList = [];
-
-        for (const link of links) {
-            const href = link.href;
-
-            if (href.toLowerCase().includes(".mp3")) {
-                songList.push(href);
-            }
-        }
-
-        return songList;
-
-    } catch (error) {
-        console.error("Error fetching songs:", error);
-        return [];
-    }
+    return [
+        "https://fpjodcjjjtrtpncdpgjc.supabase.co/storage/v1/object/public/songs/Deep%20In%20Paris.mp3",
+        "https://fpjodcjjjtrtpncdpgjc.supabase.co/storage/v1/object/public/songs/EYES%20ON%20US.mp3",
+        "https://fpjodcjjjtrtpncdpgjc.supabase.co/storage/v1/object/public/songs/One%20Day.mp3",
+        "https://fpjodcjjjtrtpncdpgjc.supabase.co/storage/v1/object/public/songs/Recall.mp3"
+    ];
 }
 
 
@@ -52,30 +28,17 @@ async function getSongs() {
 // ==========================================
 
 function getSongName(songUrl) {
-
-    let path = String(songUrl);
-
-    // Decode %20, %5C etc.
     try {
-        path = decodeURIComponent(path);
+        const url = new URL(songUrl);
+        const fileName = url.pathname.split("/").pop();
+
+        return decodeURIComponent(fileName)
+            .replace(".mp3", "")
+            .replace("%20", "")
     } catch (error) {
-        console.log("URL decode error:", error);
+        console.error("Song name error:", error);
+        return "Unknown Song";
     }
-
-    // Convert Windows backslash to slash
-    path = path.replace(/\\/g, "/");
-
-    // Remove everything before /songs/
-    const songsIndex = path.toLowerCase().lastIndexOf("/songs/");
-
-    if (songsIndex !== -1) {
-        path = path.substring(songsIndex + 7);
-    }
-
-    // Remove anything before last slash
-    path = path.split("/").pop();
-
-    return path.trim();
 }
 
 
@@ -89,11 +52,10 @@ async function playMusic(index) {
         return;
     }
 
-    // If a different song is selected
+    // Different song selected
     if (currentSongIndex !== index) {
 
         currentSong.pause();
-
         currentSong.currentTime = 0;
 
         currentSong.src = songs[index];
@@ -152,9 +114,13 @@ function togglePlayPause() {
     }
 
     if (currentSong.paused) {
+
         playMusic(currentSongIndex);
+
     } else {
+
         pauseMusic();
+
     }
 }
 
@@ -188,13 +154,11 @@ function nextSong() {
     if (currentSongIndex === -1) {
 
         playMusic(0);
-
         return;
     }
 
     let nextIndex = currentSongIndex + 1;
 
-    // Loop back to first song
     if (nextIndex >= songs.length) {
         nextIndex = 0;
     }
@@ -216,13 +180,11 @@ function previousSong() {
     if (currentSongIndex === -1) {
 
         playMusic(0);
-
         return;
     }
 
     let previousIndex = currentSongIndex - 1;
 
-    // Loop to last song
     if (previousIndex < 0) {
         previousIndex = songs.length - 1;
     }
@@ -292,10 +254,13 @@ function formatTime(seconds) {
 
     const minutes = Math.floor(seconds / 60);
 
-    const remainingSeconds = Math.floor(seconds % 60);
+    const remainingSeconds =
+        Math.floor(seconds % 60);
 
     const formattedMinutes =
-        minutes < 10 ? "0" + minutes : minutes;
+        minutes < 10
+            ? "0" + minutes
+            : minutes;
 
     const formattedSeconds =
         remainingSeconds < 10
@@ -312,7 +277,8 @@ function formatTime(seconds) {
 
 function updateSongTimer() {
 
-    const songTimer = document.querySelector(".songTimer");
+    const songTimer =
+        document.querySelector(".songTimer");
 
     if (!songTimer) {
         return;
@@ -332,8 +298,11 @@ function updateSongTimer() {
 
 function updateSeekbar() {
 
-    const seekbar = document.querySelector(".seekbar");
-    const circle = document.querySelector(".circle");
+    const seekbar =
+        document.querySelector(".seekbar");
+
+    const circle =
+        document.querySelector(".circle");
 
     if (!seekbar || !circle) {
         return;
@@ -347,7 +316,8 @@ function updateSeekbar() {
     }
 
     const percentage =
-        (currentSong.currentTime / currentSong.duration) * 100;
+        (currentSong.currentTime /
+            currentSong.duration) * 100;
 
     circle.style.left = `${percentage}%`;
 }
@@ -359,7 +329,8 @@ function updateSeekbar() {
 
 function setupSeekbar() {
 
-    const seekbar = document.querySelector(".seekbar");
+    const seekbar =
+        document.querySelector(".seekbar");
 
     if (!seekbar) {
         return;
@@ -371,7 +342,8 @@ function setupSeekbar() {
             return;
         }
 
-        const rect = seekbar.getBoundingClientRect();
+        const rect =
+            seekbar.getBoundingClientRect();
 
         const clickPosition =
             event.clientX - rect.left;
@@ -379,8 +351,8 @@ function setupSeekbar() {
         let percentage =
             clickPosition / rect.width;
 
-        // Keep value between 0 and 1
-        percentage = Math.max(0, Math.min(1, percentage));
+        percentage =
+            Math.max(0, Math.min(1, percentage));
 
         currentSong.currentTime =
             percentage * currentSong.duration;
@@ -389,16 +361,18 @@ function setupSeekbar() {
 
 
 // ==========================================
-// DISPLAY ALL SONGS IN YOUR LIBRARY
+// DISPLAY ALL SONGS
 // ==========================================
 
 function displaySongs() {
 
-    const songUl = document
-        .querySelector(".songList")
-        ?.querySelector("ul");
+    const songUl =
+        document
+            .querySelector(".songList")
+            ?.querySelector("ul");
 
     if (!songUl) {
+
         console.error("Song list <ul> not found.");
 
         return;
@@ -408,12 +382,16 @@ function displaySongs() {
 
     songs.forEach((song, index) => {
 
-        const songName = getSongName(song);
+        const songName =
+            getSongName(song);
 
         songUl.innerHTML += `
             <li data-index="${index}">
 
-                <img src="music.svg" alt="music">
+                <img
+                    src="allSvgs/music.svg"
+                    alt="music"
+                >
 
                 <div class="songinfo">
 
@@ -429,7 +407,7 @@ function displaySongs() {
 
                     <img
                         class="invert"
-                        src="allSvgs/playList.svg"
+                        src="allSvgs/playListPlay.svg"
                         alt="Play"
                     >
 
@@ -444,7 +422,8 @@ function displaySongs() {
     // ADD CLICK EVENT TO EACH SONG
     // ======================================
 
-    const songItems = songUl.querySelectorAll("li");
+    const songItems =
+        songUl.querySelectorAll("li");
 
     songItems.forEach((songItem) => {
 
@@ -484,7 +463,9 @@ function displaySongs() {
 function setupPlaybarButtons() {
 
     const buttons =
-        document.querySelectorAll(".songbuttons img");
+        document.querySelectorAll(
+            ".songbuttons img"
+        );
 
     if (buttons.length < 3) {
 
@@ -496,37 +477,44 @@ function setupPlaybarButtons() {
     }
 
     const previousButton = buttons[0];
-
     const playButton = buttons[1];
-
     const nextButton = buttons[2];
 
 
     // Previous
-    previousButton.addEventListener("click", (event) => {
+    previousButton.addEventListener(
+        "click",
+        (event) => {
 
-        event.stopPropagation();
+            event.stopPropagation();
 
-        previousSong();
-    });
+            previousSong();
+        }
+    );
 
 
     // Play / Pause
-    playButton.addEventListener("click", (event) => {
+    playButton.addEventListener(
+        "click",
+        (event) => {
 
-        event.stopPropagation();
+            event.stopPropagation();
 
-        togglePlayPause();
-    });
+            togglePlayPause();
+        }
+    );
 
 
     // Next
-    nextButton.addEventListener("click", (event) => {
+    nextButton.addEventListener(
+        "click",
+        (event) => {
 
-        event.stopPropagation();
+            event.stopPropagation();
 
-        nextSong();
-    });
+            nextSong();
+        }
+    );
 }
 
 
@@ -534,8 +522,6 @@ function setupPlaybarButtons() {
 // AUDIO EVENTS
 // ==========================================
 
-
-// Song playing
 currentSong.addEventListener("play", () => {
 
     updatePlayButton();
@@ -543,7 +529,6 @@ currentSong.addEventListener("play", () => {
 });
 
 
-// Song paused
 currentSong.addEventListener("pause", () => {
 
     updatePlayButton();
@@ -551,7 +536,6 @@ currentSong.addEventListener("pause", () => {
 });
 
 
-// Song time changes
 currentSong.addEventListener("timeupdate", () => {
 
     updateSongTimer();
@@ -561,15 +545,16 @@ currentSong.addEventListener("timeupdate", () => {
 });
 
 
-// Song metadata loaded
-currentSong.addEventListener("loadedmetadata", () => {
+currentSong.addEventListener(
+    "loadedmetadata",
+    () => {
 
-    updateSongTimer();
+        updateSongTimer();
 
-});
+    }
+);
 
 
-// Song ended
 currentSong.addEventListener("ended", () => {
 
     nextSong();
@@ -577,7 +562,6 @@ currentSong.addEventListener("ended", () => {
 });
 
 
-// Audio error
 currentSong.addEventListener("error", () => {
 
     console.error(
